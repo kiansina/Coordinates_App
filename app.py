@@ -11,7 +11,7 @@ from datetime import date
 
 
 
-img=Image.open('sin.png')
+img=Image.open('sin.PNG')
 st.set_page_config(page_title="Sina_Kian", page_icon=img)
 
 def isnan(value):
