@@ -15,7 +15,7 @@ img=Image.open('sin.PNG')
 st.set_page_config(page_title="Sina_Kian", page_icon=img)
 
 if 'pass' not in st.session_state:
-    st.session_state['pass']=True
+    st.session_state['pass']=False
 
 
 
