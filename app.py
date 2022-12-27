@@ -184,7 +184,7 @@ if check_password():
     DFST=get_data()
     st.session_state['pass']=True
     
-if st.session_state['pass']==True
+if st.session_state['pass']==True:
     with var:
         st.markdown("# Coordinates app 🎈")
         st.markdown(f"#### You can upload your excel file including :blue[Addresses], and then download the same excel with the :blue[coordinates] added.")
