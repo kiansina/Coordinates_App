@@ -16,7 +16,6 @@ st.set_page_config(page_title="Sina_Kian", page_icon=img)
 
 
 
-
 def check_password():
     """Returns `True` if the user had a correct password."""
     def password_entered():
@@ -49,7 +48,7 @@ def check_password():
         return False
     else:
         # Password correct.
-        return True
+        return True , st.session_state["username"]
 
 def isnan(value):
     try:
