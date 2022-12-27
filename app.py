@@ -176,6 +176,7 @@ dsample2=pd.read_excel("sample.xlsx" ,sheet_name='Sheet2')
 sample = to_excel(dsample)
 sample2 = to_excel(dsample2)
 if check_password():
+    DFST=get_data()
     with var:
         st.markdown("# Coordinates app 🎈")
         st.markdown(f"#### You can upload your excel file including :blue[Addresses], and then download the same excel with the :blue[coordinates] added.")
