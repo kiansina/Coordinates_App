@@ -14,6 +14,11 @@ from datetime import date
 img=Image.open('sin.PNG')
 st.set_page_config(page_title="Sina_Kian", page_icon=img)
 
+if 'pass' not in session_state:
+    st.session_state['pass']=True
+
+
+
 @st.cache(allow_output_mutation=True)
 def get_data():
     return []
@@ -177,6 +182,9 @@ sample = to_excel(dsample)
 sample2 = to_excel(dsample2)
 if check_password():
     DFST=get_data()
+    st.session_state['pass']=True
+    
+if st.session_state['pass']==True
     with var:
         st.markdown("# Coordinates app 🎈")
         st.markdown(f"#### You can upload your excel file including :blue[Addresses], and then download the same excel with the :blue[coordinates] added.")
