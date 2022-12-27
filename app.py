@@ -14,7 +14,9 @@ from datetime import date
 img=Image.open('sin.PNG')
 st.set_page_config(page_title="Sina_Kian", page_icon=img)
 
-
+@st.cache(allow_output_mutation=True)
+def get_data():
+    return []
 
 def check_password():
     """Returns `True` if the user had a correct password."""
