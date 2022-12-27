@@ -11,8 +11,45 @@ from datetime import date
 
 
 
-img=Image.open('sin.PNG')
+img=Image.open('sin.png')
 st.set_page_config(page_title="Sina_Kian", page_icon=img)
+
+
+
+
+def check_password():
+    """Returns `True` if the user had a correct password."""
+    def password_entered():
+        """Checks whether a password entered by the user is correct."""
+        if (
+            st.session_state["username"] in st.secrets["passwords"]
+            and st.session_state["password"]
+            == st.secrets["passwords"][st.session_state["username"]]
+        ):
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # don't store username + password
+            #del st.session_state["username"]
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        # First run, show inputs for username + password.
+        st.text_input("Username", on_change=password_entered, key="username")
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        return False
+    elif not st.session_state["password_correct"]:
+        # Password not correct, show input + error.
+        st.text_input("Username", on_change=password_entered, key="username")
+        st.text_input(
+            "Password", type="password", on_change=password_entered, key="password"
+        )
+        st.error("😕 User not known or password incorrect")
+        return False
+    else:
+        # Password correct.
+        return True
 
 def isnan(value):
     try:
@@ -63,52 +100,6 @@ if 's' not in st.session_state:
 
 def cha():
     st.session_state['s']=0
-
-
-
-
-dsample=pd.read_excel("sample.xlsx" ,sheet_name='Sheet1')
-dsample2=pd.read_excel("sample.xlsx" ,sheet_name='Sheet2')
-sample = to_excel(dsample)
-sample2 = to_excel(dsample2)
-
-with var:
-    st.markdown("# Coordinates app 🎈")
-    st.markdown(f"#### You can upload your excel file including :blue[Addresses], and then download the same excel with the :blue[coordinates] added.")
-    st.markdown(':blue[For every need please contact with **_sina.kian@mail.polimi.it_** \n I will develope applications to ease your work]🚧🚧🚧')
-    st.info("Your excel can be structured in one of the two ways:")
-    st.markdown(f"1. You have 4 columns exactly named as: :blue[”Country” , ”City” , ”Address” , ”Number”] \n"
-                f"2. You have 1 column which combines all the above, exactly named as: :blue[”Completed_Address”] \n"
-                f"You can leave 1 or more columns empty, but to have precise values, you need to insert all \n"
-                f" \n :blue[Download the sample excel. Sheet 1 as an example of first mode, Sheet 2 as an example of second mode.]")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.download_button(
-       "Download sample1 input",
-       sample,
-       "sample_input.xlsx",
-       "text/csv",
-       key='download-sample'
-       )
-    with col2:
-        st.download_button(
-       "Download sample2 input",
-       sample2,
-       "sample2_input.xlsx",
-       "text/csv",
-       key='download-sampl2e'
-       )
-    uploaded_file = st.file_uploader("Upload your file",type="xlsx",on_change=cha)
-    if st.session_state['s']==1:
-        st.download_button(
-           "Press to Download",
-           st.session_state['final_file'],
-           "Output_{}.xlsx".format(today.strftime("%m_%d_%y")),
-           "text/csv",
-           key='download-excel'
-           )
-        st.session_state['s']=2
-
 
 def coor():
     st.session_state["df"]=pd.DataFrame(pd.read_excel(uploaded_file))#, dtype={'data_update': datetime.datetime})
@@ -179,13 +170,49 @@ def coor():
     st.session_state['s']=1
 
 
-
-
-
-if (uploaded_file is not None) and (st.session_state['s']==0):
-    with var1:
-        st.success(f"### File is succssessfully uploaded!")
-        st.button('search for coordinates', on_click=coor)
+dsample=pd.read_excel("sample.xlsx" ,sheet_name='Sheet1')
+dsample2=pd.read_excel("sample.xlsx" ,sheet_name='Sheet2')
+sample = to_excel(dsample)
+sample2 = to_excel(dsample2)
+if check_password():
+    with var:
+        st.markdown("# Coordinates app 🎈")
+        st.markdown(f"#### You can upload your excel file including :blue[Addresses], and then download the same excel with the :blue[coordinates] added.")
+        st.markdown(':blue[For every need please contact with **_sina.kian@mail.polimi.it_** \n I will develope applications to ease your work]🚧🚧🚧')
+        st.info("Your excel can be structured in one of the two ways:")
+        st.markdown(f"1. You have 4 columns exactly named as: :blue[”Country” , ”City” , ”Address” , ”Number”] \n"
+                    f"2. You have 1 column which combines all the above, exactly named as: :blue[”Completed_Address”] \n"
+                    f"You can leave 1 or more columns empty, but to have precise values, you need to insert all \n"
+                    f" \n :blue[Download the sample excel. Sheet 1 as an example of first mode, Sheet 2 as an example of second mode.]")
+        col1, col2 = st.columns(2)
+        with col1:
+            st.download_button(
+           "Download sample1 input",
+           sample,
+           "sample_input.xlsx",
+           "text/csv",
+           key='download-sample'
+           )
+        with col2:
+            st.download_button(
+           "Download sample2 input",
+           sample2,
+           "sample2_input.xlsx",
+           "text/csv",
+           key='download-sampl2e'
+           )
+        uploaded_file = st.file_uploader("Upload your file",type="xlsx",on_change=cha)
+        if st.session_state['s']==1:
+            st.download_button(
+               "Press to Download",
+               st.session_state['final_file'],
+               "Output_{}.xlsx".format(today.strftime("%m_%d_%y")),
+               "text/csv",
+               key='download-excel'
+               )
+            st.session_state['s']=2
+    if (uploaded_file is not None) and (st.session_state['s']==0):
+        with var1:
+            st.success(f"### File is succssessfully uploaded!")
+            st.button('search for coordinates', on_click=coor)
         #st.empty()
-
-#st.session_state
